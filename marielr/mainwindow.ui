@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>724</width>
+    <height>429</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>MarielLR</string>
+  </property>
+  <widget class="QWidget" name="centralWidget">
+   <layout class="QVBoxLayout" name="verticalLayout">
+    <item>
+     <widget class="QTabWidget" name="tabWidget">
+      <property name="currentIndex">
+       <number>0</number>
+      </property>
+      <widget class="OngletBDCClients" name="BDC">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <attribute name="title">
+        <string>BDC Clients</string>
+       </attribute>
+      </widget>
+      <widget class="OngletBDCLR" name="tab_2">
+       <attribute name="title">
+        <string>BDC LR</string>
+       </attribute>
+      </widget>
+      <widget class="OngletLivraisonClients" name="tab">
+       <attribute name="title">
+        <string>Livraisons Clients</string>
+       </attribute>
+      </widget>
+      <widget class="OngletRecapitulatif" name="tab_3">
+       <attribute name="title">
+        <string>Récapitulatif</string>
+       </attribute>
+      </widget>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QMenuBar" name="menuBar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>724</width>
+     <height>21</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QToolBar" name="mainToolBar">
+   <attribute name="toolBarArea">
+    <enum>TopToolBarArea</enum>
+   </attribute>
+   <attribute name="toolBarBreak">
+    <bool>false</bool>
+   </attribute>
+  </widget>
+  <widget class="QStatusBar" name="statusBar"/>
+ </widget>
+ <layoutdefault spacing="6" margin="11"/>
+ <customwidgets>
+  <customwidget>
+   <class>OngletBDCClients</class>
+   <extends>QWidget</extends>
+   <header>ongletbdcclients.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>OngletBDCLR</class>
+   <extends>QWidget</extends>
+   <header>ongletbdclr.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>OngletLivraisonClients</class>
+   <extends>QWidget</extends>
+   <header>ongletlivraisonclients.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>OngletRecapitulatif</class>
+   <extends>QWidget</extends>
+   <header>ongletrecapitulatif.h</header>
+   <container>1</container>
+  </customwidget>
+ </customwidgets>
+ <resources/>
+ <connections/>
+</ui>
