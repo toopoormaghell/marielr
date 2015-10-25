@@ -11,6 +11,22 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 TARGET = MarieLR
 TEMPLATE = app
 
+CONFIG += debug_and_release
+CONFIG(debug,debug|release) {
+    DESTDIR = ../../bin/debug
+    OBJECTS_DIR = ../../obj/debug
+    MOC_DIR = ../../moc/debug
+    UI_DIR = ../../ui/debug
+    LIBS += -L../../bin/debug
+    RCC_DIR += ../../rcc/debug
+} else {
+    DESTDIR = ../../bin/release
+    OBJECTS_DIR = ../../obj/release
+    MOC_DIR = ../../moc/release
+    UI_DIR = ../../ui/release
+    LIBS += -L../../bin/release
+    RCC_DIR += ../../rcc/release
+}
 
 SOURCES += \
     main.cpp\
