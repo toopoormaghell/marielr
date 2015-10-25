@@ -12,8 +12,9 @@ TARGET = MarieLR
 TEMPLATE = app
 
 
-SOURCES += main.cpp\
-        mainwindow.cpp \
+SOURCES += \
+    main.cpp\
+    mainwindow.cpp \
     ongletbdcclients.cpp \
     ongletbdclr.cpp \
     ongletlivraisonclients.cpp \
@@ -29,7 +30,8 @@ SOURCES += main.cpp\
     bddcomdelr.cpp \
     bddprix.cpp
 
-HEADERS  += mainwindow.h \
+HEADERS += \
+    mainwindow.h \
     ongletbdcclients.h \
     ongletbdclr.h \
     ongletlivraisonclients.h \
@@ -45,7 +47,8 @@ HEADERS  += mainwindow.h \
     bddcomdelr.h \
     bddprix.h
 
-FORMS    += mainwindow.ui \
+FORMS += \
+    mainwindow.ui \
     ongletbdcclients.ui \
     ongletbdclr.ui \
     ongletlivraisonclients.ui \
