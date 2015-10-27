@@ -14,10 +14,12 @@ public:
     QString m_resultat;
     int m_TVA;
 
+explicit BDDPrix(QString prix, int Pourcent, QObject *parent=0);
 private:
 
     void ApplicationTVA();
     int EnInt(QString prix);
+    void ApplicationReduc();
 };
 
 #endif // BDDPRIX_H

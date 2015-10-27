@@ -38,4 +38,29 @@ void BDDPrix::ApplicationTVA()
     m_resultat = m_resultat.setNum(PrixTTC,'f',2);
 
 }
+BDDPrix::BDDPrix(QString prix, int Pourcent, QObject *parent):
+    QObject(parent),
+    m_prix(),
+    m_resultat(),
+    m_TVA()
+{
+    m_prix= EnInt(prix);
+    m_TVA = Pourcent*100;
 
+    ApplicationReduc();
+
+}
+void BDDPrix::ApplicationReduc()
+{
+    int res = m_prix*m_TVA/1000;
+    float resultat = res;
+    resultat = resultat/1000;
+    QString TVA;
+    TVA.setNum(resultat,'f',2);
+    float PrixTTC = m_prix;
+    PrixTTC = PrixTTC/100;
+    m_resultat = m_resultat.setNum(PrixTTC,'f',2);
+    PrixTTC = m_resultat.toFloat() - TVA.toFloat();
+
+    m_resultat = m_resultat.setNum(PrixTTC,'f',2);
+}
