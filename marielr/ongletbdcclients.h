@@ -30,24 +30,26 @@ private slots:
 
     void on_TableauProduits_clicked(const QModelIndex &index);
 
+    void on_Promo10_clicked();
+
 private:
     Ui::OngletBDCClients *ui;
+    QList<BDDCommande*> m_commandesencours;
+    int m_row;
+    QStandardItemModel * modele;
+    QString m_promo10;
+
     void CompletationClients();
     void AjustementOnglet();
-
-    int m_row;
-    void ModeleTableau();
-    QStandardItemModel * modele;
-    void BDCEnCours();
-
-    QList<BDDCommande*> m_commandesencours;
     void AfficherListeBDC();
     void BDCSelectionne(int cpt);
     void ListeProduitsBDCSelectionne(int cpt);
     void Total();
     void viderBDC();
-
+    void ModeleTableau();
+    void BDCEnCours();
     BDDAffichage m_affich;
+    float ApplicationPromo(float Total);
 };
 
 #endif // ONGLETBDCCLIENTS_H

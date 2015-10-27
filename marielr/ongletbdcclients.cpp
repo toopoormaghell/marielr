@@ -10,7 +10,7 @@
 #include "bddclient.h"
 #include "bddinfoscommande.h"
 #include "bddproduit.h"
-
+#include "bddprix.h"
 
 OngletBDCClients::OngletBDCClients(QWidget *parent) :
     QWidget(parent),
@@ -124,14 +124,33 @@ void OngletBDCClients::Total()
         QStandardItem* item = new QStandardItem;
         item->setTextAlignment(Qt::AlignCenter);
         item->setFlags(!Qt::ItemIsEditable);
-        item->setText(QString::number(Total,'f',2).replace(".","€"));
+        item->setText(QString::number(TotalProduit,'f',2).replace(".","€"));
         modele->setItem(i,4,item);
 
-
     }
+    //On vérifie si il y a une promo à appliquer
+    Total = ApplicationPromo(Total);
+
     //On affiche le prix Total par produit
     ui->Total->setText(QString::number(Total,'f',2).replace(".","€"));
 
+}
+float OngletBDCClients::ApplicationPromo(float Total)
+{
+    QString Prix = QString::number(Total);
+    float Resultat=Total;
+    QString promoaappliquer = ui->AutrePromo->text();
+
+    if (promoaappliquer.contains("%",Qt::CaseInsensitive))
+    {
+        int promo = promoaappliquer.replace("%","").toInt();
+
+        BDDPrix* Res = new BDDPrix(Prix,promo);
+
+        Resultat = Res->m_resultat.toFloat();
+    }
+
+    return Resultat;
 }
 
 void OngletBDCClients::BDCEnCours()
@@ -231,4 +250,10 @@ void OngletBDCClients::on_TableauProduits_clicked(const QModelIndex &index)
     }
     Total();
 
+}
+
+void OngletBDCClients::on_Promo10_clicked()
+{
+    ui->AutrePromo->setText("10%");
+    Total();
 }
