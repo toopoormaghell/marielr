@@ -18,7 +18,7 @@
     <item>
      <widget class="QTabWidget" name="tabWidget">
       <property name="currentIndex">
-       <number>0</number>
+       <number>1</number>
       </property>
       <widget class="OngletBDCClients" name="BDC">
        <property name="sizePolicy">
@@ -31,17 +31,17 @@
         <string>BDC Clients</string>
        </attribute>
       </widget>
-      <widget class="OngletBDCLR" name="tab_2">
+      <widget class="OngletBDCLR" name="BDCLR">
        <attribute name="title">
         <string>BDC LR</string>
        </attribute>
       </widget>
-      <widget class="OngletLivraisonClients" name="tab">
+      <widget class="OngletLivraisonClients" name="Livraison">
        <attribute name="title">
         <string>Livraisons Clients</string>
        </attribute>
       </widget>
-      <widget class="OngletRecapitulatif" name="tab_3">
+      <widget class="OngletRecapitulatif" name="Recap">
        <attribute name="title">
         <string>Récapitulatif</string>
        </attribute>

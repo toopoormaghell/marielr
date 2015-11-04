@@ -22,12 +22,16 @@ public:
     QString m_PUClient;
     QString m_TVA;
 
+    static BDDProduit *RecupererProduit(const QString ref);
 private:
     void ajouterBDD();
     void recupererId();
 
     //Constructeur avec une id
     BDDProduit(const int id,QObject* parent=NULL);
+
+    //Constructeur avec une ref
+    BDDProduit(const QString &ref,QObject* parent=NULL);
 };
 
 #endif // BDDPRODUIT_H

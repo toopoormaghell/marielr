@@ -18,6 +18,9 @@ public:
     explicit OngletBDCLR(QWidget *parent = 0);
     ~OngletBDCLR();
 
+    void ActualiserOnglet();
+signals:
+    void actu();
 private slots:
     void on_TableauProduits_clicked(const QModelIndex &index);
 

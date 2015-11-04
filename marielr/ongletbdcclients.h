@@ -2,9 +2,11 @@
 #define ONGLETBDCCLIENTS_H
 
 #include <QWidget>
-#include <QStandardItemModel>
+#include <QTableWidgetItem>
 #include "util.h"
 #include "bddaffichage.h"
+#include <QSignalMapper>
+
 namespace Ui {
 class OngletBDCClients;
 }
@@ -20,36 +22,35 @@ public:
 
     void AjouterBDC();
     QList<ProduitCom> RecupererProduits();
+signals:
+    void actu();
 private slots:
-
     void on_NouvelleCommande_clicked();
-
     void on_ListeClientsEnCours_currentRowChanged(int currentRow);
-
     void on_buttonBox_clicked(QAbstractButton *button);
-
-    void on_TableauProduits_clicked(const QModelIndex &index);
-
     void on_Promo10_clicked();
+    void chargementProduit(int row, int column);
+    void on_TableauProduits_cellClicked(int row, int column);
 
+    void suppressionProduit(int row);
 private:
     Ui::OngletBDCClients *ui;
     QList<BDDCommande*> m_commandesencours;
     int m_row;
-    QStandardItemModel * modele;
     QString m_promo10;
-
+    BDDAffichage m_affich;
+QSignalMapper * m_mapper;
     void CompletationClients();
-    void AjustementOnglet();
     void AfficherListeBDC();
     void BDCSelectionne(int cpt);
     void ListeProduitsBDCSelectionne(int cpt);
     void Total();
     void viderBDC();
-    void ModeleTableau();
-    void BDCEnCours();
-    BDDAffichage m_affich;
     float ApplicationPromo(float Total);
+
+    void MAJOnglet();
+    void PrixEnEuros();
+    void AjoutLigneProduitVide(int row);
 };
 
 #endif // ONGLETBDCCLIENTS_H

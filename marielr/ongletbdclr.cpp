@@ -10,6 +10,7 @@
 #include "bddgestion.h"
 #include "bddinfoscommande.h"
 #include "bddprix.h"
+#include <QDebug>
 
 OngletBDCLR::OngletBDCLR(QWidget *parent) :
     QWidget(parent),
@@ -18,9 +19,7 @@ OngletBDCLR::OngletBDCLR(QWidget *parent) :
     modele(new QStandardItemModel)
 {
     ui->setupUi(this);
-    AfficherListeBDC();
-    ModeleTableau();
-    RemplirTableau();
+    ActualiserOnglet();
 }
 
 OngletBDCLR::~OngletBDCLR()
@@ -31,11 +30,11 @@ OngletBDCLR::~OngletBDCLR()
 void OngletBDCLR::ModeleTableau()
 {
     m_row=1;
-    modele= new QStandardItemModel(m_row,8);
+    modele= new QStandardItemModel(m_row,9);
 
     // Ici on modifie les titre d'entete
     QStringList list;
-    list<<"Ref Produit"<<"Nom Produit"<<"Prix Unitaire LR HT"<<"TVA"<<"Quantité"<<"Prix Total HT"<<"Prix Total TTC"<<"Supprimer";
+    list<<"Ref Produit"<<"Nom Produit"<<"Prix Unitaire LR HT"<<"TVA"<<"Quantité"<<"Prix Unitaire TTC"<<"Prix Total HT"<<"Prix Total TTC"<<"Supprimer";
     modele->setHorizontalHeaderLabels(list);
 
     ui->TableauProduits->setModel(modele);
@@ -51,8 +50,8 @@ void OngletBDCLR::RemplirTableau()
     ProduitCom temp;
     temp.Nb_Produit=1;
     temp.Nom_Produit= "Frais de port";
-    temp.PUHT="5";
-    temp.TVA="20";
+    temp.PUHT="5.00";
+    temp.TVA="20.00";
     liste << temp;
 
     m_row = liste.count();
@@ -85,6 +84,7 @@ void OngletBDCLR::RemplirTableau()
         item->setTextAlignment(Qt::AlignCenter);
         item->setText(liste[i].TVA+"%");
         modele->setItem(i,3,item);
+
     }
 
     Total();
@@ -104,18 +104,24 @@ void OngletBDCLR::Total()
         item->setTextAlignment(Qt::AlignCenter);
         item->setFlags(!Qt::ItemIsEditable);
         item->setText(QString::number(TotalProduit,'f',2).replace(".","€"));
-        modele->setItem(i,5,item);
-        //On affiche le prix Total TTC par produit
+        modele->setItem(i,6,item);
+        //On affiche le prix Unitaire TTC par produit
         BDDPrix* TTC= new BDDPrix(PUHT,TVA);
         item = new QStandardItem;
         item->setTextAlignment(Qt::AlignCenter);
         item->setFlags(!Qt::ItemIsEditable);
         item->setText(TTC->m_resultat.replace(".","€"));
-        modele->setItem(i,6,item);
+        modele->setItem(i,5,item);
+        //On affiche le prix Total TTC par produit
+        item = new QStandardItem;
+        item->setTextAlignment(Qt::AlignCenter);
+        item->setFlags(!Qt::ItemIsEditable);
+        item->setText(QString::number((TTC->m_res*Qte),'f',2).replace(".","€"));
+        modele->setItem(i,7,item);
+        Total = Total + TTC->m_res*Qte;
 
-        Total = Total + TTC->m_resultat.toFloat();
     }
-    //On affiche le prix Total par produit
+    //On affiche le prix Total de la commande LR
     ui->Total->setText(QString::number(Total,'f',2).replace(".","€"));
 }
 
@@ -138,6 +144,7 @@ void OngletBDCLR::AjouterBDC()
     BDDGestion temp;
     temp.MettreAJourProduits(RecupererProduits());
     temp.AjouterBDCLR(m_commandesencours,"06/10/2015");
+    emit actu();
 }
 QList<ProduitCom> OngletBDCLR::RecupererProduits()
 {
@@ -176,4 +183,11 @@ QList<int> OngletBDCLR::RecupererCommandes()
         listecommandes << m_commandesencours[cpt]->m_id;
     }
     return listecommandes;
+}
+void OngletBDCLR::ActualiserOnglet()
+{
+    ui->Liste_Clients->clear();
+    AfficherListeBDC();
+    ModeleTableau();
+    RemplirTableau();
 }

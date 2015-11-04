@@ -16,42 +16,84 @@ OngletBDCClients::OngletBDCClients(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::OngletBDCClients),
     m_row(1),
-    modele(new QStandardItemModel)
+    m_mapper(new QSignalMapper)
 {
     ui->setupUi(this);
-    CompletationClients();
-    ModeleTableau();
-    AjustementOnglet();
-    AfficherListeBDC();
+    MAJOnglet();
+    connect(m_mapper,SIGNAL(mapped(int)),this,SLOT(suppressionProduit(int)));
 }
-
 OngletBDCClients::~OngletBDCClients()
 {
     delete ui;
 }
+void OngletBDCClients::suppressionProduit(int row)
+{
+    if (!ui->TableauProduits->item(row,0)->text().isEmpty())
+    {
+        ui->TableauProduits->removeRow(row);
+        ui->TableauProduits->setRowCount(m_row);
+        AjoutLigneProduitVide(m_row-1);
+        Total();
+    }
+}
+void OngletBDCClients::MAJOnglet()
+{
+    viderBDC();
+    m_row=1;
+    ui->TableauProduits->setRowCount(m_row);
+    CompletationClients();
+    ui->TableauProduits->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
+    AfficherListeBDC();
+    AjoutLigneProduitVide(0);
+}
 
+void OngletBDCClients::chargementProduit(int row, int column)
+{
+    if (row==m_row-2 && row>-1 && column==1)
+    {
+        QString ref= ui->TableauProduits->item(row,0)->text();
+        if (ref!="")
+        {
+            BDDProduit* temp = BDDProduit::RecupererProduit(ref);
+            if (temp->m_Nom!="")
+            {
+                //On affiche le nom du produit
+                QTableWidgetItem* item = new QTableWidgetItem;
+                item->setText(temp->m_Nom);
+                ui->TableauProduits->setItem(row,1,item);
+                //On affiche le prix TTC Client Unitaire
+                item = new QTableWidgetItem;
+                item->setTextAlignment(Qt::AlignCenter);
+                item->setText(temp->m_PUClient.replace(".","€"));
+                ui->TableauProduits->setItem(row,2,item);
+            }
+        }
+    }
+}
 void OngletBDCClients::AjouterBDC()
 {
-    BDDGestion temp;QString Paye;
+    BDDGestion temp;
+    QString Paye;
     if (ui->checkBox->isChecked())
         Paye="true";
     else
         Paye = "false";
     temp.AjouterBDC(ui->NomClient->text(),RecupererProduits(),ui->NumeroCommande->text(),ui->Date->text(),ui->AutrePromo->text(),Paye,"false","false");
+
+    emit actu();
 }
 
 QList<ProduitCom> OngletBDCClients::RecupererProduits()
 {
     QList<ProduitCom> Liste;
 
-    for (int ligne=0;ligne<ui->TableauProduits->model()->rowCount();ligne++)
+    for (int ligne=0;ligne<ui->TableauProduits->rowCount();ligne++)
     {
-
         ProduitCom temp;
-        temp.Ref =ui->TableauProduits->model()->index(ligne,0).data(2).toString();
-        temp.Nom_Produit = ui->TableauProduits->model()->index(ligne,1).data(2).toString();
-        temp.PUC = ui->TableauProduits->model()->index(ligne,2).data(2).toString();
-        temp.Nb_Produit = ui->TableauProduits->model()->index(ligne,3).data(2).toString().toInt();
+        temp.Ref = ui->TableauProduits->item(ligne,0)->text();
+        temp.Nom_Produit = ui->TableauProduits->item(ligne,1)->text();
+        temp.PUC = ui->TableauProduits->item(ligne,2)->text();
+        temp.Nb_Produit = ui->TableauProduits->item(ligne,3)->text().toInt();
         temp.TVA = "20";
         if ( temp.Ref!="")
             Liste << temp;
@@ -61,20 +103,19 @@ QList<ProduitCom> OngletBDCClients::RecupererProduits()
 
 void OngletBDCClients::on_NouvelleCommande_clicked()
 {
-    viderBDC();
+    MAJOnglet();
 }
 
 void OngletBDCClients::viderBDC()
 {
     ui->AutrePromo->clear();
-    ui->checkBox->setChecked(false);
+    ui->checkBox->setChecked(true);
     ui->Date->setDate(QDate::currentDate());
     ui->NomClient->clear();
     ui->NumeroCommande->clear();
     ui->Total->setText("0€00");
-    ModeleTableau();
     ui->ListeClientsEnCours->clear();
-    AfficherListeBDC();
+    ui->TableauProduits->clearContents();
 
 }
 
@@ -82,30 +123,7 @@ void OngletBDCClients::CompletationClients()
 {
     QStringList Clients= m_affich.AfficherListeClients();
 
-
     ui->NomClient->setCompleter(new QCompleter(Clients));
-}
-
-
-void OngletBDCClients::AjustementOnglet()
-{
-    ui->Date->setDate(QDate::currentDate());
-
-    ui->TableauProduits->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
-    ui->TableauProduits->setAlternatingRowColors(true);
-}
-
-void OngletBDCClients::ModeleTableau()
-{
-    m_row=1;
-    modele= new QStandardItemModel(m_row,6);
-
-    // Ici on modifie les titre d'entete
-    QStringList list;
-    list<<"Ref Produit"<<"Nom Produit"<<"Prix Unitaire Client TTC"<<"Quantité"<<"Prix Total"<<"Supprimer";
-    modele->setHorizontalHeaderLabels(list);
-
-    ui->TableauProduits->setModel(modele);
 }
 
 void OngletBDCClients::Total()
@@ -113,19 +131,19 @@ void OngletBDCClients::Total()
     float Total=0;
     for (int i=0;i<m_row;i++)
     {
-        float PUC= ui->TableauProduits->model()->index(i,2).data(2).toString().replace("€",".").toFloat();
-        int Qte= ui->TableauProduits->model()->index(i,3).data(2).toString().toInt();
+        float PUC= ui->TableauProduits->item(i,2)->text().replace("€",".").toFloat();
+        int Qte= ui->TableauProduits->item(i,3)->text().toInt();
 
         float TotalProduit=PUC*Qte;
 
         Total = Total + TotalProduit;
 
         //On affiche le prix Total par produit
-        QStandardItem* item = new QStandardItem;
+        QTableWidgetItem* item = new QTableWidgetItem;
         item->setTextAlignment(Qt::AlignCenter);
         item->setFlags(!Qt::ItemIsEditable);
         item->setText(QString::number(TotalProduit,'f',2).replace(".","€"));
-        modele->setItem(i,4,item);
+        ui->TableauProduits->setItem(i,4,item);
 
     }
     //On vérifie si il y a une promo à appliquer
@@ -152,17 +170,9 @@ float OngletBDCClients::ApplicationPromo(float Total)
 
     return Resultat;
 }
-
-void OngletBDCClients::BDCEnCours()
-{
-    BDDAffichage temp;
-    m_commandesencours = temp.AfficherListeCommandesEncours();
-
-}
-
 void OngletBDCClients::AfficherListeBDC()
 {
-    BDCEnCours();
+    m_commandesencours = m_affich.AfficherListeCommandesEncours();
     for (int cpt=0;cpt<m_commandesencours.count();cpt++)
     {
         QListWidgetItem* item = new QListWidgetItem;
@@ -179,10 +189,7 @@ void OngletBDCClients::BDCSelectionne(int cpt)
     //On affiche le nom du client
     ui->NomClient->setText(commande->m_Client->m_nom);
     //On affiche les infos de la commande
-    //    QString date = commande->m_Infos->m_Date;
-    QDate date = QDate::fromString(commande->m_Infos->m_Date,"dd.MM.YYYY");
-
-    ui->Date->setDate(date);
+    ui->Date->setDate(QDate::fromString(commande->m_Infos->m_Date,"dd.MM.yyyy"));
     ui->AutrePromo->setText(commande->m_Infos->m_Promo);
     ui->checkBox->setChecked(commande->m_Infos->m_Paye== "true" ? true : false);
     ui->NumeroCommande->setText(commande->m_Infos->m_NumCommande);
@@ -194,29 +201,35 @@ void OngletBDCClients::ListeProduitsBDCSelectionne(int cpt)
 {
     QList<QPair<int,QSharedPointer<BDDProduit> > >liste = m_commandesencours[cpt]->m_ListeProduits;
     m_row = liste.count();
-    modele->setRowCount(m_row);
+    ui->TableauProduits->setRowCount(m_row);
     for (int i=0;i<liste.count();i++)
     {
         //On affiche la quantite
-        QStandardItem* item = new QStandardItem;
+        QTableWidgetItem* item = new QTableWidgetItem;
         item->setTextAlignment(Qt::AlignCenter);
         item->setText(QString::number(liste[i].first));
-        modele->setItem(i,3,item);
+        ui->TableauProduits->setItem(i,3,item);
         //On affiche la référence
-        item = new QStandardItem;
+        item = new QTableWidgetItem;
         item->setTextAlignment(Qt::AlignCenter);
         item->setText(liste[i].second->m_Ref);
-        modele->setItem(i,0,item);
+        ui->TableauProduits->setItem(i,0,item);
         //On affiche le nom du produit
-        item = new QStandardItem;
+        item = new QTableWidgetItem;
         item->setTextAlignment(Qt::AlignCenter);
         item->setText(liste[i].second->m_Nom);
-        modele->setItem(i,1,item);
+        ui->TableauProduits->setItem(i,1,item);
         //On affiche le prix TTC Client Unitaire
-        item = new QStandardItem;
+        item = new QTableWidgetItem;
         item->setTextAlignment(Qt::AlignCenter);
         item->setText(liste[i].second->m_PUClient.replace(".","€"));
-        modele->setItem(i,2,item);
+        ui->TableauProduits->setItem(i,2,item);
+        //On affiche le bouton Supprimer de chaque ligne
+        QPushButton* button = new QPushButton;
+        button->setText("Supprimer");
+        connect(button,SIGNAL(clicked(bool)),m_mapper,SLOT(map()));
+        m_mapper->setMapping(button,i);
+        ui->TableauProduits->setCellWidget(i,5,button);
     }
 
     Total();
@@ -235,25 +248,67 @@ void OngletBDCClients::on_buttonBox_clicked(QAbstractButton *button)
     if ( button->text() =="Enregistrer" )
     {
         AjouterBDC();
-        viderBDC();
+        MAJOnglet();
     }
 }
-
-void OngletBDCClients::on_TableauProduits_clicked(const QModelIndex &index)
-{
-    int row = index.row();
-    int column = index.column();
-    if (column==0 && row==m_row-1)
-    {
-        m_row++;
-        modele->setRowCount(m_row);
-    }
-    Total();
-
-}
-
 void OngletBDCClients::on_Promo10_clicked()
 {
     ui->AutrePromo->setText("10%");
     Total();
+
+}
+void OngletBDCClients::AjoutLigneProduitVide(int row)
+{
+    //On affiche le bouton Supprimer de la nouvelle ligne
+    QPushButton* button = new QPushButton;
+    button->setText("Supprimer");
+    connect(button,SIGNAL(clicked(bool)),m_mapper,SLOT(map()));
+    m_mapper->setMapping(button,row);
+    ui->TableauProduits->setCellWidget(row,5,button);
+    //On affiche la quantite
+    QTableWidgetItem* item = new QTableWidgetItem;
+    item->setTextAlignment(Qt::AlignCenter);
+    item->setText(QString::number(1));
+    ui->TableauProduits->setItem(row,3,item);
+    //On affiche la référence
+    item = new QTableWidgetItem;
+    item->setTextAlignment(Qt::AlignCenter);
+    item->setText("");
+    ui->TableauProduits->setItem(row,0,item);
+    //On affiche le nom du produit
+    item = new QTableWidgetItem;
+    item->setTextAlignment(Qt::AlignCenter);
+    item->setText("");
+    ui->TableauProduits->setItem(row,1,item);
+    //On affiche le prix TTC Client Unitaire
+    item = new QTableWidgetItem;
+    item->setTextAlignment(Qt::AlignCenter);
+    item->setText("0.00");
+    ui->TableauProduits->setItem(row,2,item);
+}
+
+void OngletBDCClients::on_TableauProduits_cellClicked(int row, int column)
+{
+    if (column==0 && row==m_row-1 )
+    {
+        m_row++;
+        ui->TableauProduits->setRowCount(m_row);
+        AjoutLigneProduitVide(m_row-1);
+    }
+    Total();
+    chargementProduit(row,column);
+    PrixEnEuros();
+}
+
+void OngletBDCClients::PrixEnEuros()
+{
+    for (int row=0;row<m_row;row++)
+    {
+        if ( ( ui->TableauProduits->item(row,2) != NULL ) &&
+             !ui->TableauProduits->item(row,2)->text().isEmpty() )
+        {
+            QString ref= ui->TableauProduits->item(row,2)->text();
+            ui->TableauProduits->item(row,2)->setText(ref.replace(".","€"));
+        }
+    }
 }

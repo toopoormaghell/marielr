@@ -38,7 +38,7 @@ void OngletRecapitulatif::AfficherListeBDC()
             QTreeWidgetItem* item=  new QTreeWidgetItem(haut_item);
             BDDCommande* temp = BDDCommande::RecupererCommande(m_commandesencours[cpt]->m_Liste_Id_BDC[iter]);
             item->setText(0,temp->m_Client->m_nom+"("+temp->m_Infos->m_Date+")");
-            item->setFlags(!Qt::ItemIsSelectable);
+            //            item->setFlags(!Qt::ItemIsSelectable);
             haut_item->addChild(item);
         }
     }
@@ -73,4 +73,12 @@ void OngletRecapitulatif::on_ListeBDCLR_itemSelectionChanged()
 int OngletRecapitulatif::ChoixLR()
 {
     return ui->ListeBDCLR->currentItem()->data(0,Qt::UserRole).toInt();
+}
+void OngletRecapitulatif::AfficherBDCSelectionne()
+{
+
+}
+void OngletRecapitulatif::ActualiserOnglet()
+{
+    AfficherListeBDC();
 }

@@ -59,8 +59,10 @@ QList<ProduitCom > BDDAffichage::AfficherListeProduitsACommander(QList<BDDComman
         temp.Nb_Produit = rec.value("Nb_Produit").toInt();
         temp.Nom_Produit = rec.value("Nom_Produit").toString().replace("$","'");
         temp.PUC = rec.value("PrixUniClient").toFloat();
-        temp.PUHT = rec.value("PrixUniHT").toFloat();
-        temp.TVA = rec.value("TVA").toFloat();
+        float prixtemp = rec.value("PrixUniHT").toFloat();
+        temp.PUHT = temp.PUHT.setNum(prixtemp,'f',2);
+        prixtemp = rec.value("TVA").toFloat();
+        temp.TVA = temp.TVA.setNum(prixtemp,'f',2);
         temp.Ref = rec.value("Ref").toString().replace("$","'");
 
         liste << temp;

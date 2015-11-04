@@ -148,7 +148,7 @@
       </layout>
      </item>
      <item>
-      <widget class="QTableView" name="TableauProduits">
+      <widget class="QTableWidget" name="TableauProduits">
        <property name="midLineWidth">
         <number>7</number>
        </property>
@@ -161,9 +161,49 @@
        <property name="selectionMode">
         <enum>QAbstractItemView::SingleSelection</enum>
        </property>
-       <attribute name="verticalHeaderVisible">
+       <property name="rowCount">
+        <number>1</number>
+       </property>
+       <property name="columnCount">
+        <number>6</number>
+       </property>
+       <attribute name="horizontalHeaderShowSortIndicator" stdset="0">
         <bool>false</bool>
        </attribute>
+       <attribute name="horizontalHeaderStretchLastSection">
+        <bool>true</bool>
+       </attribute>
+       <row/>
+       <column>
+        <property name="text">
+         <string>Ref Produit</string>
+        </property>
+       </column>
+       <column>
+        <property name="text">
+         <string>Nom Produit</string>
+        </property>
+       </column>
+       <column>
+        <property name="text">
+         <string>Prix Unitaire Client TTC</string>
+        </property>
+       </column>
+       <column>
+        <property name="text">
+         <string>Quantité</string>
+        </property>
+       </column>
+       <column>
+        <property name="text">
+         <string>Prix Total</string>
+        </property>
+       </column>
+       <column>
+        <property name="text">
+         <string>Supprimer</string>
+        </property>
+       </column>
       </widget>
      </item>
      <item>

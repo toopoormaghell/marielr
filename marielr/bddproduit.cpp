@@ -45,6 +45,11 @@ BDDProduit *BDDProduit::RecupererProduit(const int id)
 {
     return new BDDProduit(id);
 }
+BDDProduit *BDDProduit::RecupererProduit(const QString ref)
+{
+    return new BDDProduit(ref);
+}
+
 void BDDProduit::ajouterBDD()
 {
     QString queryStr="INSERT INTO Produit VALUES (null,'"+ m_Ref+ "','"+ m_Nom+ "','"+ m_PUHT+ "','" +m_PUClient + "','" + m_TVA+"','Non')";
@@ -83,6 +88,32 @@ BDDProduit::BDDProduit(const int id, QObject *parent):
         QSqlRecord rec = query.record();
 
         m_Ref = rec.value("Ref").toString().replace("$","'");
+        m_Nom =rec.value("Nom_Produit").toString().replace("$","'");
+        float temp = rec.value("PrixUniHT").toFloat();
+        m_PUHT = m_PUHT.setNum(temp,'f',2);
+        temp = rec.value("PrixUniClient").toFloat();
+        m_PUClient= m_PUClient.setNum(temp,'f',2);
+        m_TVA= rec.value("TVA").toString();
+
+    }
+}
+
+BDDProduit::BDDProduit(const QString &ref, QObject *parent):
+    QObject(parent),
+    m_id(0),
+    m_Ref(ref),
+    m_Nom(),
+    m_PUHT(),
+    m_PUClient(),
+    m_TVA()
+{
+    QString queryStr="SELECT * FROM Produit WHERE Ref='"+ ref+"'";
+    QSqlQuery query = madatabase.exec( queryStr );
+    while ( query.next() )
+    {
+        QSqlRecord rec = query.record();
+
+        m_id = rec.value("Id_Produit").toInt();
         m_Nom =rec.value("Nom_Produit").toString().replace("$","'");
         float temp = rec.value("PrixUniHT").toFloat();
         m_PUHT = m_PUHT.setNum(temp,'f',2);

@@ -15,7 +15,7 @@ class OngletRecapitulatif : public QWidget
 public:
     explicit OngletRecapitulatif(QWidget *parent = 0);
     ~OngletRecapitulatif();
-
+ void ActualiserOnglet();
 private slots:
     void on_ListeBDCLR_itemSelectionChanged();
 
@@ -27,6 +27,8 @@ private:
 
     int ChoixLR();
     void Total();
+    void AfficherBDCSelectionne();
+
 };
 
 #endif // ONGLETRECAPITULATIF_H

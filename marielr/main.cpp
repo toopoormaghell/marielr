@@ -3,6 +3,7 @@
 #include <QLocale>
 #include <QLibraryInfo>
 #include "mainwindow.h"
+#include <QFile>
 
 int main(int argc, char *argv[])
 {
@@ -12,11 +13,19 @@ int main(int argc, char *argv[])
     QString locale = QLocale::system().name().section('_', 0, 0);
     QTranslator translator;
     if (translator.load ("qtbase_" + locale, QLibraryInfo::location (QLibraryInfo::TranslationsPath))) {
-            app.installTranslator (&translator);
-        }
-
+        app.installTranslator (&translator);
+    }
 
     MainWindow w;
+
+    //Application du style
+    QFile file("default.qss");
+    if (file.open(QFile::ReadOnly))
+    {
+        w.setStyleSheet(QLatin1String(file.readAll()));
+    }
+
+    w.setWindowTitle("MarieLR");
     w.show();
 
     return app.exec();

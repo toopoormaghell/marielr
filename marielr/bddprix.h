@@ -13,7 +13,7 @@ public:
     int m_prix;
     QString m_resultat;
     int m_TVA;
-
+float m_res;
 explicit BDDPrix(QString prix, int Pourcent, QObject *parent=0);
 private:
 
