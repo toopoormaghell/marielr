@@ -2,7 +2,6 @@
 #define ONGLETBDCLR_H
 
 #include <QWidget>
-#include <QStandardItemModel>
 #include "bddaffichage.h"
 #include <QAbstractButton>
 class BDDCommande;
@@ -29,11 +28,8 @@ private slots:
 private:
     Ui::OngletBDCLR *ui;
     int m_row;
-    QStandardItemModel * modele;
     BDDAffichage m_affich;
     QList<BDDProduit*> m_produits;
-
-    void ModeleTableau();
     void RemplirTableau();
     void Total();
     void AjouterBDC();
