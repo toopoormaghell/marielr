@@ -75,7 +75,7 @@ void BDDComdeLR::entrerProduits()
 
     for (int cpt=0;cpt<m_Liste_Id_BDC.count();cpt++)
     {
-        qDebug() << " passe ici";
+
         int id=0;
         id = recupererProduitId(m_Liste_Id_BDC[cpt]);
         if(id==-1)
