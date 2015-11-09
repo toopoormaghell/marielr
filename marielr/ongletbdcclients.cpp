@@ -67,6 +67,7 @@ void OngletBDCClients::chargementProduit(int row, int column)
                 item->setText(temp->m_PUClient.replace(".","€"));
                 ui->TableauProduits->setItem(row,2,item);
             }
+            Total();
         }
     }
 }
@@ -92,7 +93,7 @@ QList<ProduitCom> OngletBDCClients::RecupererProduits()
         ProduitCom temp;
         temp.Ref = ui->TableauProduits->item(ligne,0)->text();
         temp.Nom_Produit = ui->TableauProduits->item(ligne,1)->text();
-        temp.PUC = ui->TableauProduits->item(ligne,2)->text();
+        temp.PUC = ui->TableauProduits->item(ligne,2)->text().replace("€",".");
         temp.Nb_Produit = ui->TableauProduits->item(ligne,3)->text().toInt();
         temp.TVA = "20";
         if ( temp.Ref!="")
@@ -163,8 +164,8 @@ float OngletBDCClients::ApplicationPromo(float Total)
     {
         int promo = promoaappliquer.replace("%","").toInt();
 
-        BDDPrix* Res = new BDDPrix(Prix,promo);
-
+        BDDPrix* Res = new BDDPrix(Prix);
+        Res->ApplicationReduc(promo);
         Resultat = Res->m_resultat.toFloat();
     }
 

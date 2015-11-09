@@ -22,7 +22,7 @@ public:
     QString m_PUClient;
     QString m_TVA;
 
-    static BDDProduit *RecupererProduit(const QString ref);
+    static BDDProduit* RecupererProduit(const QString ref);
 private:
     void ajouterBDD();
     void recupererId();
