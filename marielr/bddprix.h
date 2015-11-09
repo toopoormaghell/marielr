@@ -8,18 +8,19 @@ class BDDPrix : public QObject
     Q_OBJECT
 
 public:
-    explicit BDDPrix(QString prix, QString TVA, QObject *parent = 0);
+    explicit BDDPrix(QString prix, QObject *parent=0);
 
     int m_prix;
     QString m_resultat;
     int m_TVA;
-float m_res;
-explicit BDDPrix(QString prix, int Pourcent, QObject *parent=0);
-private:
+    float m_res;
 
-    void ApplicationTVA();
+   void Quantite(int qte);
+   void ApplicationTVA(QString TVA);
+   void ApplicationReduc(int Pourcent);
+private:
     int EnInt(QString prix);
-    void ApplicationReduc();
+
 };
 
 #endif // BDDPRIX_H
