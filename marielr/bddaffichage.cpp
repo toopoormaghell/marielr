@@ -84,7 +84,7 @@ QString BDDAffichage::CreerQueryString(QList<BDDCommande *> commandes)
 QList<BDDComdeLR *> BDDAffichage::AfficherListeCommandesLREncours()
 {
     QList<BDDComdeLR*> commandes;
-    QString queryStr="SELECT Id_LR FROM LR";
+    QString queryStr="SELECT Id_LR FROM LR ";
     QSqlQuery query= madatabase.exec(queryStr);
 
     while (query.next())

@@ -129,6 +129,9 @@
      </item>
      <item>
       <widget class="QTableWidget" name="TableauProduits">
+       <attribute name="verticalHeaderVisible">
+        <bool>false</bool>
+       </attribute>
        <column>
         <property name="text">
          <string>Ref Produit</string>

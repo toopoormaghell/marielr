@@ -21,6 +21,7 @@ OngletBDCClients::OngletBDCClients(QWidget *parent) :
     ui->setupUi(this);
     MAJOnglet();
     connect(m_mapper,SIGNAL(mapped(int)),this,SLOT(suppressionProduit(int)));
+
 }
 OngletBDCClients::~OngletBDCClients()
 {
