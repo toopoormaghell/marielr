@@ -18,7 +18,7 @@
     <item>
      <widget class="QTabWidget" name="tabWidget">
       <property name="currentIndex">
-       <number>0</number>
+       <number>4</number>
       </property>
       <widget class="OngletBDCClients" name="BDC">
        <property name="sizePolicy">
@@ -44,6 +44,11 @@
       <widget class="OngletRecapitulatif" name="Recap">
        <attribute name="title">
         <string>Récapitulatif</string>
+       </attribute>
+      </widget>
+      <widget class="OngletClients" name="Clients">
+       <attribute name="title">
+        <string>Clients</string>
        </attribute>
       </widget>
      </widget>
@@ -96,7 +101,16 @@
    <header>ongletrecapitulatif.h</header>
    <container>1</container>
   </customwidget>
+  <customwidget>
+   <class>OngletClients</class>
+   <extends>QWidget</extends>
+   <header>ongletclients.h</header>
+   <container>1</container>
+  </customwidget>
  </customwidgets>
+ <tabstops>
+  <tabstop>tabWidget</tabstop>
+ </tabstops>
  <resources/>
  <connections/>
 </ui>

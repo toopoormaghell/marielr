@@ -44,7 +44,8 @@ SOURCES += \
     util.cpp \
     bddaffichage.cpp \
     bddcomdelr.cpp \
-    bddprix.cpp
+    bddprix.cpp \
+    ongletclients.cpp
 
 HEADERS += \
     mainwindow.h \
@@ -61,11 +62,13 @@ HEADERS += \
     util.h \
     bddaffichage.h \
     bddcomdelr.h \
-    bddprix.h
+    bddprix.h \
+    ongletclients.h
 
 FORMS += \
     mainwindow.ui \
     ongletbdcclients.ui \
     ongletbdclr.ui \
     ongletlivraisonclients.ui \
-    ongletrecapitulatif.ui
+    ongletrecapitulatif.ui \
+    ongletclients.ui

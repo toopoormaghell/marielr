@@ -4,6 +4,7 @@
 #include "bddsingleton.h"
 #include "util.h"
 #include "bddcomdelr.h"
+#include "bddclient.h"
 BDDAffichage::BDDAffichage(QObject *parent) : QObject(parent)
 {
 
@@ -92,5 +93,33 @@ QList<BDDComdeLR *> BDDAffichage::AfficherListeCommandesLREncours()
         QSqlRecord rec= query.record();
         commandes << BDDComdeLR::RecupererCommande(rec.value("Id_LR").toInt());
     }
+    return commandes;
+}
+QList<BDDClient *> BDDAffichage::RecupererListeClients()
+{
+    QList< BDDClient * > ListeClients ;
+    QString queryStr="SELECT Id_Client FROM Client ORDER BY Nom";
+    QSqlQuery query= madatabase.exec(queryStr);
+
+    while (query.next())
+    {
+        QSqlRecord rec= query.record();
+        ListeClients << BDDClient::RecupererClient(rec.value("Id_Client").toInt());
+    }
+
+    return ListeClients;
+}
+QList<BDDCommande*> BDDAffichage::AfficherCommandesParClient(int Client)
+{
+    QList<BDDCommande*> commandes;
+    QString queryStr="SELECT Id_BDC FROM BDC WHERE Id_Client='"+QString::number(Client)+"' ORDER BY Id_BDC";
+    QSqlQuery query= madatabase.exec(queryStr);
+
+    while (query.next())
+    {
+        QSqlRecord rec= query.record();
+        commandes << BDDCommande::RecupererCommande(rec.value("Id_BDC").toInt());
+    }
+
     return commandes;
 }
