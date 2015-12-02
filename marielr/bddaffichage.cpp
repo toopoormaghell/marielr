@@ -5,6 +5,7 @@
 #include "util.h"
 #include "bddcomdelr.h"
 #include "bddclient.h"
+
 BDDAffichage::BDDAffichage(QObject *parent) : QObject(parent)
 {
 

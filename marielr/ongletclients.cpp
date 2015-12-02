@@ -5,6 +5,7 @@
 #include "bddcommande.h"
 #include "bddinfoscommande.h"
 #include "bddprix.h"
+#include "util.h"
 
 OngletClients::OngletClients(QWidget *parent) :
     QWidget(parent),
@@ -25,7 +26,7 @@ OngletClients::~OngletClients()
 void OngletClients::ActualiserOnglet()
 {
     AfficherListeClients();
-      ui->TableauProduits->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
+    ui->TableauProduits->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
 
 }
 
@@ -50,6 +51,8 @@ void OngletClients::on_ListeClients_currentItemChanged(QListWidgetItem *current,
     m_cptclient = current->data(Qt::UserRole).toInt();
     AfficheRenseignementsClient();
     AfficherListeBDC();
+    ui->ListeProduitsPreferes->clear();
+    ProduitPreferes();
 
 }
 void OngletClients::AfficheRenseignementsClient()
@@ -144,19 +147,19 @@ void OngletClients::AfficherBDCSelectionne(int id)
         item->setTextAlignment(Qt::AlignRight|Qt::AlignVCenter);
         ui->TableauProduits->setItem(i,7,item);
 
-       totalttcclient = totalttcclient + TotalClient;
+        totalttcclient = totalttcclient + TotalClient;
 
         if(commandeencours->m_Client->m_id!=1)
         {
-        //Affichage de la Marge
-        float Marge = TotalClient-TotalLR;
-        item = new QTableWidgetItem;
-        tempStr =QString::number(Marge,'f',2);
-        item->setText(tempStr.replace(".","€"));
-        item->setTextAlignment(Qt::AlignRight|Qt::AlignVCenter);
-        ui->TableauProduits->setItem(i,8,item);
+            //Affichage de la Marge
+            float Marge = TotalClient-TotalLR;
+            item = new QTableWidgetItem;
+            tempStr =QString::number(Marge,'f',2);
+            item->setText(tempStr.replace(".","€"));
+            item->setTextAlignment(Qt::AlignRight|Qt::AlignVCenter);
+            ui->TableauProduits->setItem(i,8,item);
 
-        MargeGlobale = MargeGlobale + Marge;
+            MargeGlobale = MargeGlobale + Marge;
         }
     }
     //Total Clients
@@ -173,5 +176,20 @@ void OngletClients::AfficherBDCSelectionne(int id)
         item->setFont( serifFont);
         item->setTextAlignment(Qt::AlignRight|Qt::AlignVCenter);
         ui->TableauProduits->setItem(commandeencours->m_ListeProduits.count(),8,item);
+    }
+}
+
+void OngletClients::ProduitPreferes()
+{
+    util temp;
+    QList<ProduitCom> Produits = temp.ListeProduits(m_Commandes);
+    std::sort( Produits.begin(), Produits.end() );
+    std::reverse( Produits.begin(), Produits.end() );
+    for (int cpt= 0; cpt < Produits.count(); cpt++ )
+    {
+        QListWidgetItem* item = new QListWidgetItem;
+        item->setData(Qt::UserRole,cpt);
+        item->setText(QString::number(Produits[cpt].Nb_Produit) + "  " +Produits[cpt].Nom_Produit);
+        ui->ListeProduitsPreferes->addItem(item);
     }
 }

@@ -36,6 +36,7 @@ private:
     void AfficherListeBDC();
     QList<BDDCommande *> m_Commandes;
     void AfficherBDCSelectionne(int id);
+    void ProduitPreferes();
 };
 
 #endif // ONGLETCLIENTS_H
