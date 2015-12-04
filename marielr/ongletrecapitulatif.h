@@ -4,6 +4,7 @@
 #include <QWidget>
 #include "bddaffichage.h"
 class BDDComdeLR;
+class BDDProduit;
 namespace Ui {
 class OngletRecapitulatif;
 }
@@ -26,10 +27,11 @@ private:
     BDDAffichage m_affich;
     float m_Marge;
     float m_TotalTTCClients;
-    int ChoixLR();
+    QString ChoixLR();
     void Total();
     void AfficherBDCSelectionne();
 
+    void AfficherProduit(QSharedPointer<BDDProduit> tempProduit, int row, int Qte);
 };
 
 #endif // ONGLETRECAPITULATIF_H
