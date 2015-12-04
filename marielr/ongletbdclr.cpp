@@ -132,7 +132,7 @@ void OngletBDCLR::AjouterBDC()
 {
     BDDGestion temp;
     temp.MettreAJourProduits(RecupererProduits());
-    temp.AjouterBDCLR(m_commandesencours,ui->Date->text());
+    temp.AjouterBDCLR(m_commandesencours,ui->Date->dateTime().toString("yyyy.MM.dd"));
     emit actu();
 }
 QList<ProduitCom> OngletBDCLR::RecupererProduits()
@@ -159,7 +159,7 @@ void OngletBDCLR::AfficherListeBDC()
     {
         QListWidgetItem* item = new QListWidgetItem;
         item->setData(Qt::UserRole,cpt);
-        item->setText(m_commandesencours[cpt]->m_Client->m_nom+"("+m_commandesencours[cpt]->m_Infos->m_Date+")");
+        item->setText(m_commandesencours[cpt]->m_Client->m_nom+"("+m_util.ChangementDate(m_commandesencours[cpt]->m_Infos->m_Date)+")");
         item->setSelected(true);
         ui->Liste_Clients->addItem(item);
     }

@@ -77,7 +77,7 @@ void OngletClients::AfficherListeBDC()
     {
         QListWidgetItem* item = new QListWidgetItem;
         item->setData(Qt::UserRole,cpt);
-        item->setText("Commande du "+m_Commandes[cpt]->m_Infos->m_Date+"" );
+        item->setText("Commande du "+m_util.ChangementDate(m_Commandes[cpt]->m_Infos->m_Date) );
         ui->ListeBDC->addItem(item);
     }
 }
@@ -204,5 +204,5 @@ void OngletClients::on_buttonBox_clicked(QAbstractButton *button)
 }
 void OngletClients::Enregistrer()
 {
-BDDClient temp(ui->NomClient->text(),ui->PrenomClient->text(),ui->AdresseClient->text(),ui->MailClient->text(),ui->Ville->text(),ui->CP->text().toInt(),ui->TelClient->text().toInt());
+    BDDClient temp(ui->NomClient->text(),ui->PrenomClient->text(),ui->AdresseClient->text(),ui->MailClient->text(),ui->Ville->text(),ui->CP->text().toInt(),ui->TelClient->text().toInt());
 }

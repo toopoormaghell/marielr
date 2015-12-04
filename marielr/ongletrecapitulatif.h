@@ -5,6 +5,7 @@
 #include "bddaffichage.h"
 class BDDComdeLR;
 class BDDProduit;
+class util;
 namespace Ui {
 class OngletRecapitulatif;
 }
@@ -30,7 +31,7 @@ private:
     QString ChoixLR();
     void Total();
     void AfficherBDCSelectionne();
-
+    util m_util;
     void AfficherProduit(QSharedPointer<BDDProduit> tempProduit, int row, int Qte);
 };
 

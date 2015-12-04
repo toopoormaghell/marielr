@@ -9,11 +9,12 @@
 #include <QSharedPointer>
 #include "bddprix.h"
 #include <QDebug>
-
+#include "util.h"
 OngletRecapitulatif::OngletRecapitulatif(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::OngletRecapitulatif),
-    m_commandesencours()
+    m_commandesencours(),
+m_util()
 {
     ui->setupUi(this);
     ActualiserOnglet();
@@ -29,17 +30,19 @@ void OngletRecapitulatif::AfficherListeBDC()
     for (int cpt=0;cpt<m_commandesencours.count();cpt++)
     {
         QTreeWidgetItem* haut_item = new QTreeWidgetItem(ui->ListeBDCLR);
-        haut_item->setData(0,Qt::UserRole,"CDE"+QString::number(m_commandesencours[cpt]->m_id));
-        haut_item->setText(0,"Commande du "+m_commandesencours[cpt]->m_Date+"" );
+        haut_item->setData(0,Qt::UserRole,"CDE"+QString::number(cpt));
+       haut_item->setText(0,"Commande du "+m_util.ChangementDate(m_commandesencours[cpt]->m_Date) );
         ui->ListeBDCLR->addTopLevelItem(haut_item);
 
         int compteurcommande =0;
+
         for (int iter = 0;iter<m_commandesencours[cpt]->m_Liste_Id_BDC.count();iter++)
         {
             QTreeWidgetItem* item=  new QTreeWidgetItem(haut_item);
             BDDCommande* temp = BDDCommande::RecupererCommande(m_commandesencours[cpt]->m_Liste_Id_BDC[iter]);
-            item->setText(0,temp->m_Client->m_nom+"("+temp->m_Infos->m_Date+")");
-            item->setData(0,Qt::UserRole,QString::number(m_commandesencours[cpt]->m_id)+"BDC"+QString::number(compteurcommande));
+
+            item->setText(0,temp->m_Client->m_nom+"("+m_util.ChangementDate( temp->m_Infos->m_Date) +")");
+            item->setData(0,Qt::UserRole,QString::number(cpt)+"BDC"+QString::number(compteurcommande));
             haut_item->addChild(item);
             compteurcommande ++;
         }
@@ -66,7 +69,6 @@ void OngletRecapitulatif::AfficherBDCSelectionne()
 {
     ui->TableauProduits->clearContents();
     QString temp = ChoixLR();
-    qDebug() << temp;
     int cpt = 1;
     m_Marge= 0;
     m_TotalTTCClients=0;
@@ -79,7 +81,7 @@ void OngletRecapitulatif::AfficherBDCSelectionne()
     if ( temp.contains("CDE"))
     {
         QString cpttemp =  temp.split("CDE")[1];
-        cpt = cpttemp.toInt()-1;
+        cpt = cpttemp.toInt();
         iter_fin = m_commandesencours[cpt]->m_Liste_Id_BDC.count();
 
     } else
@@ -90,7 +92,7 @@ void OngletRecapitulatif::AfficherBDCSelectionne()
 
             QStringList cpttemp = temp.split("BDC");
 
-            cpt = cpttemp[0].toInt()-1;
+            cpt = cpttemp[0].toInt();
             iter_debut= cpttemp[1].toInt();
             iter_fin = iter_debut+1;
         }
@@ -194,4 +196,5 @@ void OngletRecapitulatif::ActualiserOnglet()
     AfficherListeBDC();
     AfficherBDCSelectionne();
     ui->TableauProduits->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
+
 }

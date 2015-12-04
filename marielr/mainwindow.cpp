@@ -17,6 +17,7 @@ MainWindow::MainWindow(QWidget *parent) :
     m_ongletbdcclients= ui->BDC;
     m_ongletbdclr = ui->BDCLR;
     m_ongletlivraison = ui->Livraison;
+    m_ongletlivraison->setHidden(true);
     m_ongletrecap = ui->Recap;
     //Changement dans l'ongletBDDClients, donc on rafraichit l'onglet LR
     connect(m_ongletbdcclients,SIGNAL(actu()),this,SLOT(changementOngletBDCClients()));

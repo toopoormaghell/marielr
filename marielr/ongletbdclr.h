@@ -5,6 +5,7 @@
 #include "bddaffichage.h"
 #include <QAbstractButton>
 class BDDCommande;
+class util;
 namespace Ui {
 class OngletBDCLR;
 }
@@ -37,6 +38,7 @@ private:
     void AfficherListeBDC();
     QList<BDDCommande*> m_commandesencours;
     QList<int> RecupererCommandes();
+    util m_util;
 };
 
 #endif // ONGLETBDCLR_H

@@ -80,7 +80,8 @@ void OngletBDCClients::AjouterBDC()
         Paye="true";
     else
         Paye = "false";
-    temp.AjouterBDC(ui->NomClient->text(),RecupererProduits(),ui->NumeroCommande->text(),ui->Date->text(),ui->AutrePromo->text(),Paye,"false","false");
+
+    temp.AjouterBDC(ui->NomClient->text(),RecupererProduits(),ui->NumeroCommande->text(),ui->Date->dateTime().toString("yyyy.MM.dd"),ui->AutrePromo->text(),Paye,"false","false");
 
     emit actu();
 }
@@ -179,7 +180,7 @@ void OngletBDCClients::AfficherListeBDC()
     {
         QListWidgetItem* item = new QListWidgetItem;
         item->setData(Qt::UserRole,cpt);
-        item->setText(m_commandesencours[cpt]->m_Client->m_nom+"("+m_commandesencours[cpt]->m_Infos->m_Date+")");
+        item->setText(m_commandesencours[cpt]->m_Client->m_nom+"("+m_util.ChangementDate(m_commandesencours[cpt]->m_Infos->m_Date)+")");
 
         ui->ListeClientsEnCours->addItem(item);
     }
@@ -191,7 +192,7 @@ void OngletBDCClients::BDCSelectionne(int cpt)
     //On affiche le nom du client
     ui->NomClient->setText(commande->m_Client->m_nom);
     //On affiche les infos de la commande
-    ui->Date->setDate(QDate::fromString(commande->m_Infos->m_Date,"dd.MM.yyyy"));
+    ui->Date->setDate(QDate::fromString(commande->m_Infos->m_Date,"yyyy.MM.dd"));
     ui->AutrePromo->setText(commande->m_Infos->m_Promo);
     ui->checkBox->setChecked(commande->m_Infos->m_Paye== "true" ? true : false);
     ui->NumeroCommande->setText(commande->m_Infos->m_NumCommande);

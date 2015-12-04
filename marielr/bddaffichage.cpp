@@ -86,7 +86,7 @@ QString BDDAffichage::CreerQueryString(QList<BDDCommande *> commandes)
 QList<BDDComdeLR *> BDDAffichage::AfficherListeCommandesLREncours()
 {
     QList<BDDComdeLR*> commandes;
-    QString queryStr="SELECT Id_LR FROM LR ";
+    QString queryStr="SELECT Id_LR FROM LR ORDER BY Date DESC";
     QSqlQuery query= madatabase.exec(queryStr);
 
     while (query.next())
@@ -113,7 +113,7 @@ QList<BDDClient *> BDDAffichage::RecupererListeClients()
 QList<BDDCommande*> BDDAffichage::AfficherCommandesParClient(int Client)
 {
     QList<BDDCommande*> commandes;
-    QString queryStr="SELECT Id_BDC FROM BDC WHERE Id_Client='"+QString::number(Client)+"' ORDER BY Id_BDC";
+    QString queryStr="SELECT Id_BDC FROM BDC WHERE Id_Client='"+QString::number(Client)+"' ORDER BY Date";
     QSqlQuery query= madatabase.exec(queryStr);
 
     while (query.next())

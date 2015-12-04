@@ -12,6 +12,7 @@ namespace Ui {
 class OngletClients;
 }
 class BDDClients;
+class util;
 class OngletClients : public QWidget
 {
     Q_OBJECT
@@ -41,6 +42,7 @@ private:
     void AfficherBDCSelectionne(int id);
     void ProduitPreferes();
     void Enregistrer();
+    util m_util;
 };
 
 #endif // ONGLETCLIENTS_H

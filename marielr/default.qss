@@ -28,7 +28,7 @@ background-color: red;
 }
 QPushButton {
 color: #FFFF96;
-background-color: #1EA7EC;
+background-color: #03320C;
 border-width: 1px;
 border-color: #339;
 border-style: solid;
@@ -42,9 +42,9 @@ max-width: 80px;
 min-height: 13px;
 max-height: 13px;
 }
-QLabel {
+QLabel, CheckBox {
 font-size: 15px;
-color : #1EA7EC;
+color : #03320C;
 }
 QListWidget, QTableWidget,QTreeWidget{
 background-color:#FFFF96;
@@ -53,7 +53,8 @@ border-color: #339;
 border-style: solid;
 border-radius: 7;
 padding: 3px;
-font-size: 11px;
+font-size: 13px;
+color: #173B0B;
 padding-left: 5px;
 padding-right: 5px;
 alternate-background-color: #FDE1AC;

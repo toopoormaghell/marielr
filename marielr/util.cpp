@@ -38,3 +38,8 @@ QList<ProduitCom> util::ListeProduits(QList<BDDCommande * > commandes)
     }
     return tempListeProduits;
 }
+QString util::ChangementDate(QString Date)
+{
+    QStringList temp = Date.split('.');
+    return temp[2]+"."+temp[1]+"."+temp[0];
+}

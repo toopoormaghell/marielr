@@ -19,7 +19,7 @@ int main(int argc, char *argv[])
     MainWindow w;
 
     //Application du style
-    QFile file("default.qss");
+    QFile file(":/qss/default");
     if (file.open(QFile::ReadOnly))
     {
         w.setStyleSheet(QLatin1String(file.readAll()));

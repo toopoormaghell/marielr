@@ -377,13 +377,13 @@
         <widget class="QListWidget" name="ListeBDC">
          <property name="minimumSize">
           <size>
-           <width>150</width>
+           <width>200</width>
            <height>500</height>
           </size>
          </property>
          <property name="maximumSize">
           <size>
-           <width>150</width>
+           <width>200</width>
            <height>16777215</height>
           </size>
          </property>

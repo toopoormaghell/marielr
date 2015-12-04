@@ -40,6 +40,7 @@ class util: public QObject
 public:
     explicit util(QObject *parent = 0);
     QList<ProduitCom> ListeProduits(QList<BDDCommande *> commandes);
+    QString ChangementDate(QString Date);
 };
 
 

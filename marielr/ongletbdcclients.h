@@ -12,6 +12,7 @@ class OngletBDCClients;
 }
 class BDDCommande;
 class QAbstractButton;
+class util;
 class OngletBDCClients : public QWidget
 {
     Q_OBJECT
@@ -39,7 +40,7 @@ private:
     int m_row;
     QString m_promo10;
     BDDAffichage m_affich;
-QSignalMapper * m_mapper;
+    QSignalMapper * m_mapper;
     void CompletationClients();
     void AfficherListeBDC();
     void BDCSelectionne(int cpt);
@@ -47,7 +48,7 @@ QSignalMapper * m_mapper;
     void Total();
     void viderBDC();
     float ApplicationPromo(float Total);
-
+    util m_util;
     void MAJOnglet();
     void PrixEnEuros();
     void AjoutLigneProduitVide(int row);
