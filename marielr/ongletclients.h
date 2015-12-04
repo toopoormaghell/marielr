@@ -6,6 +6,7 @@
 #include "bddaffichage.h"
 #include <QListWidgetItem>
 #include "bddcommande.h"
+#include <QAbstractButton>
 
 namespace Ui {
 class OngletClients;
@@ -26,6 +27,8 @@ private slots:
 
     void on_ListeBDC_currentItemChanged(QListWidgetItem *current, QListWidgetItem *previous);
 
+    void on_buttonBox_clicked(QAbstractButton *button);
+
 private:
     void AfficherListeClients();
     Ui::OngletClients *ui;
@@ -37,6 +40,7 @@ private:
     QList<BDDCommande *> m_Commandes;
     void AfficherBDCSelectionne(int id);
     void ProduitPreferes();
+    void Enregistrer();
 };
 
 #endif // ONGLETCLIENTS_H

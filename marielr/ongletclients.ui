@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>1092</width>
-    <height>680</height>
+    <height>783</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -189,20 +189,7 @@
                </widget>
               </item>
               <item>
-               <widget class="QTextEdit" name="AdresseClient">
-                <property name="minimumSize">
-                 <size>
-                  <width>0</width>
-                  <height>100</height>
-                 </size>
-                </property>
-                <property name="maximumSize">
-                 <size>
-                  <width>16777215</width>
-                  <height>100</height>
-                 </size>
-                </property>
-               </widget>
+               <widget class="QLineEdit" name="AdresseClient"/>
               </item>
              </layout>
             </item>
@@ -280,7 +267,10 @@
           <item>
            <widget class="QDialogButtonBox" name="buttonBox">
             <property name="standardButtons">
-             <set>QDialogButtonBox::Cancel|QDialogButtonBox::Save</set>
+             <set>QDialogButtonBox::Save</set>
+            </property>
+            <property name="centerButtons">
+             <bool>true</bool>
             </property>
            </widget>
           </item>

@@ -187,9 +187,22 @@ void OngletClients::ProduitPreferes()
     std::reverse( Produits.begin(), Produits.end() );
     for (int cpt= 0; cpt < Produits.count(); cpt++ )
     {
-        QListWidgetItem* item = new QListWidgetItem;
-        item->setData(Qt::UserRole,cpt);
-        item->setText(QString::number(Produits[cpt].Nb_Produit) + "  " +Produits[cpt].Nom_Produit);
-        ui->ListeProduitsPreferes->addItem(item);
+        if (Produits[cpt].Nb_Produit>1)
+        {
+            QListWidgetItem* item = new QListWidgetItem;
+            item->setData(Qt::UserRole,cpt);
+            item->setText(QString::number(Produits[cpt].Nb_Produit) + "  " +Produits[cpt].Nom_Produit);
+            ui->ListeProduitsPreferes->addItem(item);
+        }
     }
+}
+
+void OngletClients::on_buttonBox_clicked(QAbstractButton *button)
+{
+    Q_UNUSED(button);
+    Enregistrer();
+}
+void OngletClients::Enregistrer()
+{
+BDDClient temp(ui->NomClient->text(),ui->PrenomClient->text(),ui->AdresseClient->text(),ui->MailClient->text(),ui->Ville->text(),ui->CP->text().toInt(),ui->TelClient->text().toInt());
 }

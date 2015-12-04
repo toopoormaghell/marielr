@@ -31,6 +31,9 @@ BDDClient::~BDDClient()
 void BDDClient::updateBDD()
 {
 
+   QString queryStr="UPDATE Client SET Prenom ='" + m_prenom +"', Adresse = '"+ m_adresse+"', CodePostal = '"+ QString::number(m_codepostal) +"', Ville = '"+ m_ville+"', Tel = '" + QString::number(m_tel) +"', Mail ='"+ m_mail + "'  WHERE Id_Client='"+ QString::number(m_id) +"'";
+
+      madatabase.exec(queryStr);
 }
 
 void BDDClient::supprimerenBDD() const
