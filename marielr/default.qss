@@ -1,0 +1,167 @@
+QMainWindow::separator {
+background: yellow;
+width: 10px; /* when vertical */
+height: 10px; /* when horizontal */
+}
+
+QMainWindow::separator:hover {
+background: red;
+}
+
+QWidget{
+background-color: #CAFBD5;
+}
+FenetrePrincipale {
+border: 2px solid gray;
+border-radius: 4px;
+background-color: #BBFFFF;
+}
+QLineEdit {
+color : red;
+padding: 1px;
+border-style: solid;
+border: 2px solid gray;
+border-radius: 8px;
+}
+QLineEdit::QPushButton {
+background-color: red;
+}
+QPushButton {
+color: #FFFF96;
+background-color: #1EA7EC;
+border-width: 1px;
+border-color: #339;
+border-style: solid;
+border-radius: 7;
+padding: 3px;
+font-size: 10px;
+padding-left: 5px;
+padding-right: 5px;
+min-width: 80px;
+max-width: 80px;
+min-height: 13px;
+max-height: 13px;
+}
+QLabel {
+font-size: 15px;
+color : #1EA7EC;
+}
+QListWidget, QTableWidget,QTreeWidget{
+background-color:#FFFF96;
+border-width: 1px;
+border-color: #339;
+border-style: solid;
+border-radius: 7;
+padding: 3px;
+font-size: 11px;
+padding-left: 5px;
+padding-right: 5px;
+alternate-background-color: #FDE1AC;
+}
+QHeaderView::section
+{
+background-color: #FCB32B;
+}
+QListWidget::item:selected{
+background : #1EA7EC;
+color: #FFFF96;
+}
+QScrollBar:horizontal {
+border: 2px solid #339;
+background: #1EA7EC;
+height: 15px;
+margin: 0px 20px 0 20px;
+}
+QScrollBar::handle:horizontal {
+background: #FFFF96;
+min-width: 20px;
+}
+QScrollBar::add-line:horizontal {
+border: 2px solid #339;
+background: ;
+width: 20px;
+subcontrol-position: right;
+subcontrol-origin: margin;
+}
+QScrollBar:left-arrow:horizontal, QScrollBar::right-arrow:horizontal {
+border: 2px solid #339;
+width: 3px;
+height: 3px;
+background: white;
+}
+QScrollBar::add-page:horizontal, QScrollBar::sub-page:horizontal {
+background: none;
+}
+QScrollBar::sub-line:horizontal {
+border: 2px solid #339;
+background: #1EA7EC;
+width: 20px;
+subcontrol-position: left;
+subcontrol-origin: margin;
+}
+QScrollBar:vertical {
+border: 2px solid #339;
+background: #1EA7EC;
+width: 15px;
+margin: 22px 0 22px 0;
+}
+QScrollBar::handle:vertical {
+background: #FFFF96;
+min-height: 20px;
+}
+QScrollBar::add-line:vertical {
+border: 2px solid #339;
+background: #1EA7EC;
+height: 20px;
+subcontrol-position: bottom;
+subcontrol-origin: margin;
+}
+
+QScrollBar::sub-line:vertical {
+border: 2px solid #339;
+background: #1EA7EC;
+height: 20px;
+subcontrol-position: top;
+subcontrol-origin: margin;
+}
+QScrollBar::up-arrow:vertical, QScrollBar::down-arrow:vertical {
+border: 2px solid #339;
+width: 3px;
+height: 3px;
+background: white;
+}
+QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {
+ background: none;
+}
+
+ QTabWidget::pane { /* The tab widget frame */
+ border-top: 2px solid #FFFF96;
+ }
+ QTabWidget::tab-bar {
+ left: 5px; /* move to the right by 5px */
+ }
+
+ /* Style the tab using the tab sub-control. Note that
+ it reads QTabBar _not_ QTabWidget */
+ QTabBar::tab {
+ color: #1EA7EC;
+ background: #FFFF96;
+ border: 1px solid #339;
+ border-bottom-color: #FFFF96; /* same as the pane color */
+ border-top-left-radius: 15px;
+ border-top-right-radius: 15px;
+ width: 80px;
+ padding:2px;
+ }
+ QTabBar::tab:selected, QTabBar::tab:hover {
+ color:  #FFFF96;
+ background:#1EA7EC;
+ }
+ QTabBar::tab:selected {
+ border-color: #9B9B9B;
+ border-bottom-color: #FFFF96; /* same as pane color */
+ }
+ QTabBar::tab:!selected {
+ margin-top: 10px; /* make non-selected tabs look smaller */
+ }
+

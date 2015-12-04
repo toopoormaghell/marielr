@@ -72,3 +72,6 @@ FORMS += \
     ongletlivraisonclients.ui \
     ongletrecapitulatif.ui \
     ongletclients.ui
+
+RESOURCES += \
+    defaut.qrc
