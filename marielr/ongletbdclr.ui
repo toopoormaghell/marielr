@@ -207,7 +207,31 @@
         </widget>
        </item>
        <item>
-        <widget class="QLabel" name="Total">
+        <widget class="QLabel" name="TotalHT">
+         <property name="font">
+          <font>
+           <pointsize>20</pointsize>
+          </font>
+         </property>
+         <property name="text">
+          <string>0 € 00</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLabel" name="label_3">
+         <property name="font">
+          <font>
+           <pointsize>20</pointsize>
+          </font>
+         </property>
+         <property name="text">
+          <string>HT / </string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLabel" name="TotalTTC">
          <property name="font">
           <font>
            <pointsize>20</pointsize>
@@ -221,6 +245,18 @@
          </property>
          <property name="textInteractionFlags">
           <set>Qt::TextSelectableByKeyboard|Qt::TextSelectableByMouse</set>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLabel" name="label_2">
+         <property name="font">
+          <font>
+           <pointsize>20</pointsize>
+          </font>
+         </property>
+         <property name="text">
+          <string>TTC</string>
          </property>
         </widget>
        </item>

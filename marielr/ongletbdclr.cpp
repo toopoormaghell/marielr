@@ -76,9 +76,22 @@ void OngletBDCLR::RemplirTableau()
 }
 void OngletBDCLR::Total()
 {
-    float Total=0;
+    float TotalTTC=0;
+    float TotalHT= 0;
     for (int i=0;i<m_row;i++)
     {
+        if ( i == m_row-1 )
+        {
+            if (TotalHT>=255)
+            {
+                //On enlève les frais de port
+                ui->TableauProduits->item(ui->TableauProduits->rowCount()-1,2)->setText(QString::number(0).replace(".","€"));
+            } else{
+                //On enlève les frais de port
+                ui->TableauProduits->item(ui->TableauProduits->rowCount()-1,2)->setText(QString::number(5).replace(".","€"));
+            }
+        }
+
         QString PUHT= ui->TableauProduits->item(i,2)->text().replace("€",".");
         int Qte= ui->TableauProduits->item(i,5)->text().toInt();
         QString TVA =  ui->TableauProduits->item(i,3)->text().replace("%","");
@@ -91,6 +104,8 @@ void OngletBDCLR::Total()
         item->setFlags(!Qt::ItemIsEditable);
         item->setText(QString::number(TotalProduit,'f',2).replace(".","€"));
         ui->TableauProduits->setItem(i,6,item);
+        //On calcule le prix Total HT par produit
+        TotalHT = TotalHT + TotalProduit;
         //On affiche le prix Unitaire TTC par produit
         BDDPrix* TTC= new BDDPrix(PUHT);
         TTC->ApplicationTVA(TVA);
@@ -105,13 +120,16 @@ void OngletBDCLR::Total()
         item->setTextAlignment(Qt::AlignCenter);
         item->setFlags(!Qt::ItemIsEditable);
         TTC->Quantite(Qte);
-        Total = Total + ( std::floor( TTC->m_res*100 + 0.5f ) ) / 100.0f;
+        TotalTTC = TotalTTC + ( std::floor( TTC->m_res*100 + 0.5f ) ) / 100.0f;
         item->setText(TTC->m_resultat.replace(".","€"));
         ui->TableauProduits->setItem(i,7,item);
 
     }
-    //On affiche le prix Total de la commande LR
-    ui->Total->setText(QString::number(Total,'f',2).replace(".","€"));
+    //On affiche le prix Total TTC de la commande LR
+    ui->TotalTTC->setText(QString::number(TotalTTC,'f',2).replace(".","€"));
+    //On affiche le prix Total HT de la commande LR
+    ui->TotalHT->setText(QString::number(TotalHT,'f',2).replace(".","€"));
+
 }
 
 void OngletBDCLR::on_TableauProduits_clicked(const QModelIndex &index)
