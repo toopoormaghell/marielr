@@ -80,9 +80,9 @@ void OngletBDCLR::Total()
     float TotalHT= 0;
     for (int i=0;i<m_row;i++)
     {
-        if ( i == m_row-1 )
+     /*   if ( i == m_row-1 )
         {
-            if (TotalHT>=255)
+           if (TotalHT>=255)
             {
                 //On enlève les frais de port
                 ui->TableauProduits->item(ui->TableauProduits->rowCount()-1,2)->setText(QString::number(0).replace(".","€"));
@@ -90,8 +90,9 @@ void OngletBDCLR::Total()
                 //On enlève les frais de port
                 ui->TableauProduits->item(ui->TableauProduits->rowCount()-1,2)->setText(QString::number(5).replace(".","€"));
             }
-        }
 
+        }
+*/
         QString PUHT= ui->TableauProduits->item(i,2)->text().replace("€",".");
         int Qte= ui->TableauProduits->item(i,5)->text().toInt();
         QString TVA =  ui->TableauProduits->item(i,3)->text().replace("%","");
@@ -150,7 +151,8 @@ void OngletBDCLR::AjouterBDC()
 {
     BDDGestion temp;
     temp.MettreAJourProduits(RecupererProduits());
-    temp.AjouterBDCLR(m_commandesencours,ui->Date->dateTime().toString("yyyy.MM.dd"));
+    temp.AjouterBDCLR(m_commandesencours,ui->Date->dateTime().toString("yyyy/MM/dd"));
+    ui->TableauProduits->clearContents();
     emit actu();
 }
 QList<ProduitCom> OngletBDCLR::RecupererProduits()
@@ -198,4 +200,6 @@ void OngletBDCLR::ActualiserOnglet()
     RemplirTableau();
     ui->TableauProduits->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
     ui->Date->setDate(QDate::currentDate());
+
+
 }

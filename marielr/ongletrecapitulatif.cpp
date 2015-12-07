@@ -14,7 +14,7 @@ OngletRecapitulatif::OngletRecapitulatif(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::OngletRecapitulatif),
     m_commandesencours(),
-m_util()
+    m_util()
 {
     ui->setupUi(this);
     ActualiserOnglet();
@@ -31,7 +31,8 @@ void OngletRecapitulatif::AfficherListeBDC()
     {
         QTreeWidgetItem* haut_item = new QTreeWidgetItem(ui->ListeBDCLR);
         haut_item->setData(0,Qt::UserRole,"CDE"+QString::number(cpt));
-       haut_item->setText(0,"Commande du "+m_util.ChangementDate(m_commandesencours[cpt]->m_Date) );
+
+        haut_item->setText(0,"Commande du "+m_util.ChangementDate(m_commandesencours[cpt]->m_Date) );
         ui->ListeBDCLR->addTopLevelItem(haut_item);
 
         int compteurcommande =0;
@@ -106,7 +107,7 @@ void OngletRecapitulatif::AfficherBDCSelectionne()
         for (int i=0;i<temp->m_ListeProduits.count();i++)
         {
             QSharedPointer < BDDProduit > tempProduit = temp->m_ListeProduits[i].second;
-            AfficherProduit(tempProduit,row+i,temp->m_ListeProduits[i].first);
+            AfficherProduit(tempProduit,row+i,temp->m_ListeProduits[i].first,temp->m_Client->m_id);
         }
 
         //Affichage des totaux
@@ -117,16 +118,16 @@ void OngletRecapitulatif::AfficherBDCSelectionne()
         item->setTextAlignment(Qt::AlignRight|Qt::AlignVCenter);
         item->setText(QString::number(m_TotalTTCClients,'f',2).replace(".","€"));
         ui->TableauProduits->setItem(row,7,item);
+
         //Total Marge
         item = new QTableWidgetItem;
         item->setText(QString::number(m_Marge,'f',2).replace(".","€"));
         item->setFont( serifFont);
         item->setTextAlignment(Qt::AlignRight|Qt::AlignVCenter);
         ui->TableauProduits->setItem(row,8,item);
-
     }
 }
-void OngletRecapitulatif::AfficherProduit(QSharedPointer < BDDProduit > tempProduit, int row, int Qte)
+void OngletRecapitulatif::AfficherProduit(QSharedPointer < BDDProduit > tempProduit, int row, int Qte, int id_client)
 {
     //affichage de la référence
     QTableWidgetItem* item = new QTableWidgetItem;
@@ -150,12 +151,19 @@ void OngletRecapitulatif::AfficherProduit(QSharedPointer < BDDProduit > tempProd
     item->setTextAlignment(Qt::AlignRight|Qt::AlignVCenter);
     item->setText(tempStr.replace(".","€"));
     ui->TableauProduits->setItem(row,3,item);
+
     //Affichage du Prix TTC Clients
     item = new QTableWidgetItem;
     tempStr = tempProduit->m_PUClient;
     item->setText(tempStr.replace(".","€"));
+    if (id_client ==1)
+    {
+        item->setText("0€00");
+    }
     item->setTextAlignment(Qt::AlignRight|Qt::AlignVCenter);
     ui->TableauProduits->setItem(row,4,item);
+
+
     //Affichage de la Quantité
     item = new QTableWidgetItem;
     item->setText(QString::number(Qte));
@@ -168,25 +176,37 @@ void OngletRecapitulatif::AfficherProduit(QSharedPointer < BDDProduit > tempProd
     item->setText(tempStr.replace(".","€"));
     item->setTextAlignment(Qt::AlignRight|Qt::AlignVCenter);
     ui->TableauProduits->setItem(row,6,item);
-    //Affichage du Total TTC Clients
-    float TotalClient = tempProduit->m_PUClient.toFloat() * Qte;
-    item = new QTableWidgetItem;
-    tempStr =QString::number(TotalClient,'f',2);
-    item->setText(tempStr.replace(".","€"));
-    item->setTextAlignment(Qt::AlignRight|Qt::AlignVCenter);
-    ui->TableauProduits->setItem(row,7,item);
-    //Affichage de la Marge
-    float Marge = TotalClient-TotalLR;
-    item = new QTableWidgetItem;
-    tempStr =QString::number(Marge,'f',2);
-    item->setText(tempStr.replace(".","€"));
-    item->setTextAlignment(Qt::AlignRight|Qt::AlignVCenter);
-    ui->TableauProduits->setItem(row,8,item);
 
-    //Calcul du Total Marge et du Total Clients
-    m_Marge = m_Marge+ Marge;
-    m_TotalTTCClients = m_TotalTTCClients + TotalClient;
+        //Affichage du Total TTC Clients
+        float TotalClient = tempProduit->m_PUClient.toFloat() * Qte;
+        item = new QTableWidgetItem;
+        tempStr =QString::number(TotalClient,'f',2);
+        item->setText(tempStr.replace(".","€"));
+        if (id_client ==1)
+        {
+            item->setText("0€00");
+        }
+        item->setTextAlignment(Qt::AlignRight|Qt::AlignVCenter);
+        ui->TableauProduits->setItem(row,7,item);
 
+        //Affichage de la Marge
+        float Marge = TotalClient-TotalLR;
+        item = new QTableWidgetItem;
+        tempStr =QString::number(Marge,'f',2);
+        item->setText(tempStr.replace(".","€"));
+        if (id_client ==1)
+        {
+            item->setText("0€00");
+        }
+        item->setTextAlignment(Qt::AlignRight|Qt::AlignVCenter);
+        ui->TableauProduits->setItem(row,8,item);
+
+        if (id_client !=1)
+        {
+        //Calcul du Total Marge et du Total Clients
+        m_Marge = m_Marge+ Marge;
+        m_TotalTTCClients = m_TotalTTCClients + TotalClient;
+    }
 }
 
 void OngletRecapitulatif::ActualiserOnglet()

@@ -32,7 +32,7 @@ private:
     void Total();
     void AfficherBDCSelectionne();
     util m_util;
-    void AfficherProduit(QSharedPointer<BDDProduit> tempProduit, int row, int Qte);
+    void AfficherProduit(QSharedPointer<BDDProduit> tempProduit, int row, int Qte, int id_client);
 };
 
 #endif // ONGLETRECAPITULATIF_H

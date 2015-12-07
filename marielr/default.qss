@@ -2,12 +2,16 @@ QMainWindow::separator {
 background: yellow;
 width: 10px; /* when vertical */
 height: 10px; /* when horizontal */
+color: black;
 }
 
 QMainWindow::separator:hover {
 background: red;
 }
-
+QDateEdit::down-arrow 
+{
+ 
+  }
 QWidget{
 background-color: #CAFBD5;
 }

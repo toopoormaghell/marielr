@@ -41,5 +41,8 @@ QList<ProduitCom> util::ListeProduits(QList<BDDCommande * > commandes)
 QString util::ChangementDate(QString Date)
 {
     QStringList temp = Date.split('.');
-    return temp[2]+"."+temp[1]+"."+temp[0];
+    if (temp.count()>2)
+        return temp[2]+"."+temp[1]+"."+temp[0];
+    else
+        return Date;
 }
