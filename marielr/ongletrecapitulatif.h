@@ -32,7 +32,10 @@ private:
     void Total();
     void AfficherBDCSelectionne();
     util m_util;
+    QList<BDDComdeLR*> m_commandesmois;
     void AfficherProduit(QSharedPointer<BDDProduit> tempProduit, int row, int Qte, int id_client);
+    void RecupererDate();
+    void CalculMarge();
 };
 
 #endif // ONGLETRECAPITULATIF_H

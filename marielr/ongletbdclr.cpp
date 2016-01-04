@@ -142,7 +142,7 @@ void OngletBDCLR::on_TableauProduits_clicked(const QModelIndex &index)
 
 void OngletBDCLR::on_buttonBox_clicked(QAbstractButton *button)
 {
-    if ( button->text() =="Enregistrer" )
+    if ( button->text() =="Enregistrer" || button->text() == "Save")
     {
         AjouterBDC();
     }
@@ -151,7 +151,7 @@ void OngletBDCLR::AjouterBDC()
 {
     BDDGestion temp;
     temp.MettreAJourProduits(RecupererProduits());
-    temp.AjouterBDCLR(m_commandesencours,ui->Date->dateTime().toString("yyyy/MM/dd"));
+    temp.AjouterBDCLR(m_commandesencours,ui->Date->dateTime().toString("yyyy.MM.dd"));
     ui->TableauProduits->clearContents();
     emit actu();
 }

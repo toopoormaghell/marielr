@@ -31,7 +31,7 @@ QList<ProduitCom> util::ListeProduits(QList<BDDCommande * > commandes)
 
             } else
             {
-                tempListeProduits[position].Nb_Produit ++;
+                tempListeProduits[position].Nb_Produit = tempListeProduits[position].Nb_Produit+ Produit.Nb_Produit;
             }
 
         }

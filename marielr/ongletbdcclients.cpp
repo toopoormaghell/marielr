@@ -94,6 +94,12 @@ QList<ProduitCom> OngletBDCClients::RecupererProduits()
     {
         ProduitCom temp;
         temp.Ref = ui->TableauProduits->item(ligne,0)->text();
+
+        BDDProduit* prod = BDDProduit::RecupererProduit(temp.Ref);
+        if (prod->m_Nom!="")
+        {
+            temp.PUHT = prod->m_PUHT;
+        }
         temp.Nom_Produit = ui->TableauProduits->item(ligne,1)->text();
         temp.PUC = ui->TableauProduits->item(ligne,2)->text().replace("€",".");
         temp.Nb_Produit = ui->TableauProduits->item(ligne,3)->text().toInt();
@@ -248,7 +254,7 @@ void OngletBDCClients::on_ListeClientsEnCours_currentRowChanged(int currentRow)
 
 void OngletBDCClients::on_buttonBox_clicked(QAbstractButton *button)
 {
-    if ( button->text() =="Enregistrer" )
+    if ( button->text() =="Enregistrer" || button->text() == "Save")
     {
         AjouterBDC();
         MAJOnglet();

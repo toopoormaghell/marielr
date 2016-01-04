@@ -10,6 +10,7 @@
 #include "bddprix.h"
 #include <QDebug>
 #include "util.h"
+#include <QDate>
 OngletRecapitulatif::OngletRecapitulatif(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::OngletRecapitulatif),
@@ -58,7 +59,7 @@ void OngletRecapitulatif::Total()
 void OngletRecapitulatif::on_ListeBDCLR_itemSelectionChanged()
 {
     AfficherBDCSelectionne();
-    Total();
+    //   Total();
 }
 QString OngletRecapitulatif::ChoixLR()
 {
@@ -177,32 +178,32 @@ void OngletRecapitulatif::AfficherProduit(QSharedPointer < BDDProduit > tempProd
     item->setTextAlignment(Qt::AlignRight|Qt::AlignVCenter);
     ui->TableauProduits->setItem(row,6,item);
 
-        //Affichage du Total TTC Clients
-        float TotalClient = tempProduit->m_PUClient.toFloat() * Qte;
-        item = new QTableWidgetItem;
-        tempStr =QString::number(TotalClient,'f',2);
-        item->setText(tempStr.replace(".","€"));
-        if (id_client ==1)
-        {
-            item->setText("0€00");
-        }
-        item->setTextAlignment(Qt::AlignRight|Qt::AlignVCenter);
-        ui->TableauProduits->setItem(row,7,item);
+    //Affichage du Total TTC Clients
+    float TotalClient = tempProduit->m_PUClient.toFloat() * Qte;
+    item = new QTableWidgetItem;
+    tempStr =QString::number(TotalClient,'f',2);
+    item->setText(tempStr.replace(".","€"));
+    if (id_client ==1)
+    {
+        item->setText("0€00");
+    }
+    item->setTextAlignment(Qt::AlignRight|Qt::AlignVCenter);
+    ui->TableauProduits->setItem(row,7,item);
 
-        //Affichage de la Marge
-        float Marge = TotalClient-TotalLR;
-        item = new QTableWidgetItem;
-        tempStr =QString::number(Marge,'f',2);
-        item->setText(tempStr.replace(".","€"));
-        if (id_client ==1)
-        {
-            item->setText("0€00");
-        }
-        item->setTextAlignment(Qt::AlignRight|Qt::AlignVCenter);
-        ui->TableauProduits->setItem(row,8,item);
+    //Affichage de la Marge
+    float Marge = TotalClient-TotalLR;
+    item = new QTableWidgetItem;
+    tempStr =QString::number(Marge,'f',2);
+    item->setText(tempStr.replace(".","€"));
+    if (id_client ==1)
+    {
+        item->setText("0€00");
+    }
+    item->setTextAlignment(Qt::AlignRight|Qt::AlignVCenter);
+    ui->TableauProduits->setItem(row,8,item);
 
-        if (id_client !=1)
-        {
+    if (id_client !=1)
+    {
         //Calcul du Total Marge et du Total Clients
         m_Marge = m_Marge+ Marge;
         m_TotalTTCClients = m_TotalTTCClients + TotalClient;
@@ -216,5 +217,79 @@ void OngletRecapitulatif::ActualiserOnglet()
     AfficherListeBDC();
     AfficherBDCSelectionne();
     ui->TableauProduits->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
+    RecupererDate();
+
+}
+void OngletRecapitulatif::RecupererDate()
+{
+    QString Date = QDateTime::currentDateTime().toString("yyyy.MM.dd");
+    QStringList Datetemp = Date.split(".");
+    int Annee = Datetemp[0].toInt();
+    int Mois = Datetemp[1].toInt();
+    int Jour = Datetemp[2].toInt();
+
+
+    for (int i=0;i<m_commandesencours.count();i++)
+    {
+        Date = m_commandesencours[i]->m_Date;
+        Datetemp = Date.split(".");
+        int AnneeCde  = Datetemp[0].toInt();
+        int MoisCde = Datetemp[1].toInt();
+        int JourCde = Datetemp[2].toInt();
+
+
+        if (Jour > 9 && MoisCde == Mois)
+        {
+            m_commandesmois << m_commandesencours[i];
+        }
+        if (Jour < 9 )
+        {
+            if (Mois == MoisCde)
+            {
+                m_commandesmois << m_commandesencours[i];
+
+            }
+            if ( ( Mois-1 == MoisCde || (Mois==1 && MoisCde == 12 && Annee-1 == AnneeCde) ) && JourCde > 9 )
+            {
+                m_commandesmois << m_commandesencours[i];
+            }
+        }
+    }
+    CalculMarge();
+}
+void OngletRecapitulatif::CalculMarge()
+{
+    m_Marge= 0;
+    m_TotalTTCClients=0;
+
+    //On prend toute les commandes
+    for (int cpt= 0;cpt<m_commandesmois.count();cpt++)
+    {
+        for (int iter = 0;iter<m_commandesmois[cpt]->m_Liste_Id_BDC.count();iter++)
+        {
+            BDDCommande* temp = BDDCommande::RecupererCommande(m_commandesmois[cpt]->m_Liste_Id_BDC[iter]);
+            for (int i = 0 ; i<temp->m_ListeProduits.count(); i++)
+            {
+                QSharedPointer < BDDProduit > tempProduit = temp->m_ListeProduits[i].second;
+                int Qte = temp->m_ListeProduits[i].first;
+
+                //Calcul Prix TTC LR
+                BDDPrix* prix = new BDDPrix(tempProduit->m_PUHT);
+                prix->ApplicationTVA(tempProduit->m_TVA);
+                float TotalLR = prix->m_res * Qte;
+                //Calcul de la marge
+                float TotalClient = tempProduit->m_PUClient.toFloat() * Qte;
+                float Marge = TotalClient-TotalLR;
+
+                if (temp->m_Client->m_id !=1)
+                {
+                    //Calcul du Total Marge et du Total Clients
+                    m_TotalTTCClients = m_TotalTTCClients + TotalClient;
+                    m_Marge = m_Marge+ Marge;
+                }
+            }
+        }
+    }
+    Total();
 
 }
