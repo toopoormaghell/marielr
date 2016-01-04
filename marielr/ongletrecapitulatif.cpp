@@ -50,7 +50,7 @@ void OngletRecapitulatif::AfficherListeBDC()
         }
     }
 }
-void OngletRecapitulatif::Total()
+void OngletRecapitulatif::AffichageMarge()
 {
     ui->Marge->setText(QString::number(m_Marge,'f',2).replace(".","€"));
     ui->PrixClients->setText(QString::number(m_TotalTTCClients,'f',2).replace(".","€"));
@@ -217,16 +217,19 @@ void OngletRecapitulatif::ActualiserOnglet()
     AfficherListeBDC();
     AfficherBDCSelectionne();
     ui->TableauProduits->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
-    RecupererDate();
+    RecupererCommandesMois();
+    AfficherPeriode();
 
 }
-void OngletRecapitulatif::RecupererDate()
+void OngletRecapitulatif::RecupererCommandesMois()
 {
+    //On récupère la date pour la comparer
     QString Date = QDateTime::currentDateTime().toString("yyyy.MM.dd");
     QStringList Datetemp = Date.split(".");
     int Annee = Datetemp[0].toInt();
     int Mois = Datetemp[1].toInt();
     int Jour = Datetemp[2].toInt();
+
 
 
     for (int i=0;i<m_commandesencours.count();i++)
@@ -290,6 +293,46 @@ void OngletRecapitulatif::CalculMarge()
             }
         }
     }
-    Total();
+    AffichageMarge();
 
+}
+void OngletRecapitulatif::AfficherPeriode()
+{
+    //On récupère la date pour afficher la période.
+    QString Date = QDateTime::currentDateTime().toString("yyyy.MM.dd");
+    QStringList Datetemp = Date.split(".");
+    int Annee = Datetemp[0].toInt();
+    int Mois = Datetemp[1].toInt();
+    int Jour = Datetemp[2].toInt();
+
+    QString premier ;
+    int MoisDeuxieme;
+    int AnneeDeuxieme;
+    QString dernier ;
+    if( Jour > 16 )
+    {
+        MoisDeuxieme = Mois +1 ;
+        AnneeDeuxieme = Annee ;
+        if (MoisDeuxieme > 12 )
+        {
+            MoisDeuxieme = 1;
+            AnneeDeuxieme= Annee + 1;
+        }
+        premier = "10."+QString::number(Mois)+"."+QString::number(Annee);
+        dernier = "09."+QString::number(MoisDeuxieme)+"."+QString::number(AnneeDeuxieme);
+    }
+    if (Jour < 15)
+    {
+        MoisDeuxieme = Mois - 1;
+        AnneeDeuxieme = Annee ;
+        if ( MoisDeuxieme < 1 )
+        {
+            MoisDeuxieme = 12;
+            AnneeDeuxieme --;
+        }
+        premier = "10."+QString::number(MoisDeuxieme)+"."+QString::number(AnneeDeuxieme);
+        dernier = "09."+QString::number(Mois)+"."+QString::number(Annee);
+    }
+
+    ui->Periode->setText("Entre le "+premier+" et le "+dernier);
 }

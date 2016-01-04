@@ -29,13 +29,14 @@ private:
     float m_Marge;
     float m_TotalTTCClients;
     QString ChoixLR();
-    void Total();
+    void AffichageMarge();
     void AfficherBDCSelectionne();
     util m_util;
     QList<BDDComdeLR*> m_commandesmois;
     void AfficherProduit(QSharedPointer<BDDProduit> tempProduit, int row, int Qte, int id_client);
-    void RecupererDate();
+    void RecupererCommandesMois();
     void CalculMarge();
+    void AfficherPeriode();
 };
 
 #endif // ONGLETRECAPITULATIF_H
